@@ -5,8 +5,34 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>AMap</title>
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			height: 100%;
+		}
+
+		#container {
+			height: 480px;
+		}
+	</style>
 </head>
 <body>
+
+	<div id="container"></div>
+
+	
+	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.7&key=cad7df78081487c83ede86bd4d126384"></script> 
+
+	<script>
+		var map = new AMap.Map('container', {
+			center: [114.304065, 30.59263],			// 中心点坐标
+			zoom: 11,				// 缩放级别
+			viewMode: '3D'	// 使用3D视图
+		});
+	</script>
+
 	
 </body>
 </html>
