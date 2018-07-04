@@ -29,15 +29,15 @@
 		var map = new AMap.Map('container', {
 			center: [114.304065, 30.59263],			// 中心点坐标
 			zoom: 11,				// 缩放级别
-			viewMode: '3D'	// 使用3D视图
+			viewMode: '3D',	// 使用3D视图
+			layers: [
+				// 卫星视图
+				new AMap.TileLayer.Satellite(),
+				// 路网视图
+				new AMap.TileLayer.RoadNet()
+			],
+			zooms: [4, 18]
 		});
-
-		// 实时路况图层
-		var trafficLayer = new AMap.TileLayer.Traffic({
-			zIndex: 10
-		});
-		// 添加图层到地图
-		map.add(trafficLayer);
 
 	</script>
 
