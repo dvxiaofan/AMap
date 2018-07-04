@@ -23,24 +23,19 @@
 	<div id="container"></div>
 
 	
-	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.7&key=cad7df78081487c83ede86bd4d126384"></script> 
 
 	<script>
-		var map = new AMap.Map('container', {
-			center: [114.304065, 30.59263],			// 中心点坐标
-			zoom: 11,				// 缩放级别
-			viewMode: '3D',	// 使用3D视图
-			layers: [
-				// 卫星视图
-				new AMap.TileLayer.Satellite(),
-				// 路网视图
-				new AMap.TileLayer.RoadNet()
-			],
-			zooms: [4, 18]
-		});
+		window.init = () => {
+			var map = new AMap.Map('container', {
+				center: [114.304065, 30.59263],			// 中心点坐标
+				zoom: 11,				// 缩放级别
+				viewMode: '3D'	// 使用3D视图
+			});
+		}
 
 	</script>
 
+	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.7&key=cad7df78081487c83ede86bd4d126384&callback=init"></script> 
 	
 </body>
 </html>
