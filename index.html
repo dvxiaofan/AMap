@@ -16,46 +16,59 @@
 		}
 
 		#container {
-			height: 480px;
+			height: 680px;
 		}
 	</style>
 </head>
 <body>
 
 	<div id="container"></div>
+	<div class="button-group">
+			<input id="setFitView" class="button" type="button" value="地图自适应显示"/>
+	</div>
+	<div class="info-tip">
+			<div id="centerCoord"></div>
+			<div id="tips"></div>
+	</div>
 
 	<script>
 		function onApiLoaded() {
-			//初始化地图对象，加载地图
-			var map = new AMap.Map("container", {
+			var map = new AMap.Map('container', {
         resizeEnable: true,
+        center: [114.308357,30.60844],
         zoom: 13
-			});
-			var lnglat1 = new AMap.LngLat(114.306812,30.60844)
-			var lnglat2 =  new AMap.LngLat(114.341659,30.554055)
-			new AMap.Marker({
+    });    
+    map.clearMap();  // 清除地图覆盖物
+    var markers = [{
+        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b1.png',
+        position: [114.030952,30.583616]
+    }, {
+        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b2.png',
+        position: [114.316596,30.411446]
+    }, {
+        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b3.png',
+        position: [114.441566,30.78144]
+    }];
+    // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
+    markers.forEach(function(marker) {
+        new AMap.Marker({
 					map: map,
-					position: lnglat1
+					icon: marker.icon,
+					position: [marker.position[0], marker.position[1]],
+					offset: new AMap.Pixel(-12, -36)
+        });
 			});
-			new AMap.Marker({
-					map: map,
-					position:lnglat2
+			var center = map.getCenter();
+			var centerText = '当前中心点坐标：' + center.getLng() + ',' + center.getLat();
+			document.getElementById('centerCoord').innerHTML = centerText;
+			document.getElementById('tips').innerHTML = '成功添加三个点标记，其中有两个在当前地图视野外！';
+
+			// 添加事件监听, 使地图自适应显示到合适的范围
+			AMap.event.addDomListener(document.getElementById('setFitView'), 'click', function() {
+					var newCenter = map.setFitView();
+					document.getElementById('centerCoord').innerHTML = '当前中心点坐标：' + newCenter.getCenter();
+					document.getElementById('tips').innerHTML = '通过setFitView，地图自适应显示到合适的范围内,点标记已全部显示在视野中！';
 			});
-		new AMap.Polyline({
-				map:map,
-					strokeColor:'red',
-				path:[lnglat1,lnglat2]
-			})
-			
-			new AMap.Text({
-					text:'两点相距'+Math.round(lnglat1.distance(lnglat2))+'米',
-					position:lnglat1.divideBy(2).add(lnglat2.divideBy(2)),
-					map:map,
-					style:{'background-color':'#ccccff',
-					'border-color':'green',
-					'font-size':'12px'}
-			})
-			map.setFitView();
 		}
 
 		var url = 'http://webapi.amap.com/maps?v=1.4.7&key=cad7df78081487c83ede86bd4d126384&callback=onApiLoaded';
