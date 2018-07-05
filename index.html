@@ -5,6 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>AMap</title>
+	<link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+	<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
 
 	<style>
 		body {
@@ -22,20 +24,117 @@
 
 	<div id="container"></div>
 
-	
-
 	<script>
-		window.init = () => {
-			var map = new AMap.Map('container', {
-				center: [114.304065, 30.59263],			// 中心点坐标
-				zoom: 11,				// 缩放级别
-				viewMode: '3D'	// 使用3D视图
-			});
+		function onApiLoaded() {
+			//初始化地图对象，加载地图
+			var map = new AMap.Map("container", {
+        resizeEnable: true,
+        zoom: 13
+    });
+    var path1 = [
+        [116.376907,39.910967],
+        [116.384911,39.919505],
+        [116.40109,39.919728],
+        [116.411132,39.911408],
+        [116.412076,39.899135],
+        [116.402292,39.892353],
+        [116.3874,39.892518],
+        [116.376971,39.899267]
+    ]
+    new AMap.Polygon({
+        map:map,
+        fillColor:'blue',
+        fillOpacity:0.3,
+        path:path1
+    })
+    var path2 = [
+        [116.390233,39.906602],
+        [116.395254,39.908668],
+        [116.400661,39.906667],
+        [116.400962,39.898589],
+        [116.395769,39.894855],
+        [116.390147,39.898049],
+    ]
+    new AMap.Polygon({
+        map:map,
+        fillColor:'red',
+        fillOpacity:0.3,
+        path:path2
+    })
+    if(AMap.GeometryUtil.isRingInRing(path2,path1)){
+        new AMap.Text({
+            text: '在大圈里面',
+            position: [116.396254,39.902668],
+            map:map,
+            style:{'background-color':'#ccccff',
+                    'border-color':'green',
+                    'font-size':'12px'}
+        })
+    }
+    var path3 = [
+        [116.418385,39.932801],
+        [116.423407,39.934867],
+        [116.428814,39.932866],
+        [116.429114,39.924791],
+        [116.423922,39.921059],
+        [116.418299,39.924252]
+    ]
+    new AMap.Polygon({
+        map:map,
+        fillColor:'yellow',
+        fillOpacity:0.3,
+        path:path3
+    })
+    if(!AMap.GeometryUtil.isRingInRing(path3,path1)){
+        new AMap.Text({
+            text: '在大圈外面',
+            position: [116.424254,39.928668],
+            map:map,
+            style:{'background-color':'#ccccff',
+                    'border-color':'green',
+                    'font-size':'12px'}
+        })
+    }
+    var path4 = [
+        [116.377014,39.925825],
+        [116.382036,39.927891],
+        [116.387443,39.92589],
+        [116.387743,39.917814],
+        [116.382551,39.914081],
+        [116.376928,39.917274]
+    ]
+    new AMap.Polygon({
+        map:map,
+        fillColor:'green',
+        fillOpacity:0.3,
+        path:path4
+    })
+    if(AMap.GeometryUtil.doesRingRingIntersect(path4,path1)){
+        new AMap.Polygon({
+            map:map,
+            path:AMap.GeometryUtil.ringRingClip(path1,path4)
+        })
+        new AMap.Text({
+            text:'相交面',
+            position:[116.384256,39.916671],
+            map:map,
+            style:{'background-color':'#ccccff',
+                    'border-color':'green',
+                    'font-size':'12px'}
+        })
+    }
+    
+    
+    map.setFitView();
 		}
+
+		var url = 'http://webapi.amap.com/maps?v=1.4.7&key=cad7df78081487c83ede86bd4d126384&callback=onApiLoaded';
+    var jsapi = document.createElement('script');
+    jsapi.charset = 'utf-8';
+    jsapi.src = url;
+    document.head.appendChild(jsapi);
 
 	</script>
 
-	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.7&key=cad7df78081487c83ede86bd4d126384&callback=init"></script> 
-	
 </body>
 </html>
